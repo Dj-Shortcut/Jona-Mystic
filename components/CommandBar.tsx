@@ -1,14 +1,20 @@
-export type CommandBarProps = {
-  prompt: string;
-  command: string;
-};
+const commands = [
+  { href: '#mixes', label: 'open mixes' },
+  { href: '#gigs', label: 'open gigs' },
+  { href: '#contact', label: 'open contact' },
+];
 
-export function CommandBar({ prompt, command }: CommandBarProps) {
+export function CommandBar() {
   return (
-    <div className="mt-6 rounded-md border border-emerald-400/40 bg-black/60 px-4 py-3 font-mono text-sm text-emerald-100">
-      <span className="text-emerald-300">{prompt}</span>
-      <span className="ml-2">{command}</span>
-      <span className="ml-1 inline-block h-4 w-2 animate-pulse bg-emerald-200 align-middle" aria-hidden />
-    </div>
+    <nav className="panel p-4 sm:p-5" aria-label="Command shortcuts">
+      <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[var(--muted)]">commands</p>
+      <div className="flex flex-wrap gap-2.5">
+        {commands.map((command) => (
+          <a key={command.href} href={command.href} className="cmd hover:glow transition">
+            {command.label}
+          </a>
+        ))}
+      </div>
+    </nav>
   );
 }
