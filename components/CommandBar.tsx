@@ -38,6 +38,10 @@ export function CommandBar() {
   return (
     <nav className="panel p-space-16" aria-label="Command shortcuts">
       <p className="meta-label mb-space-12">COMMANDS</p>
+      <p className="mb-space-12 text-xs text-[var(--muted)]">
+        guest@jona-mystic:~$ run shortcut
+        <span className={`cursor-block ml-1 text-[var(--green1)] ${prefersReducedMotion ? 'is-reduced' : ''}`}>▋</span>
+      </p>
       <div className="flex flex-wrap gap-space-8">
         {commands.map((command) => (
           <button key={command.href} type="button" onClick={() => runCommand(command.href, command.label)} className="cmd">

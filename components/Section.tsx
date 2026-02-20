@@ -42,7 +42,7 @@ export function Section({ id, title, pathLabel, children }: SectionProps) {
   }, [prefersReducedMotion]);
 
   return (
-    <section id={id} ref={ref} className={`panel reveal p-space-16 ${visible ? 'is-visible' : ''}`}>
+    <section id={id} ref={ref} className={`panel section-panel reveal p-space-16 ${visible ? 'is-visible' : ''}`}>
       <p className="meta-label">{pathLabel}</p>
       <h2 className="title mt-space-8 text-[var(--text)]">{title}</h2>
       <div className="mt-space-16 text-sm leading-[1.5] text-[var(--muted)]">{children}</div>
