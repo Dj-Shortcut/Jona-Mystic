@@ -1,48 +1,71 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-const logLines = [
-  '[SYS] INITIALIZING AUDIO GRAPH...',
-  '[OK] LOADING VISUAL MODULES...',
-  '[OK] SYNCING BPM CLOCK...',
-  '[OK] ROUTING OUTPUT -> MAIN',
-  '[OK] READY',
-];
+import { BOOT_LOG_LINES, getBootLogDelay } from '@/lib/bootLog';
+import { usePrefersReducedMotion } from '@/lib/motion';
 
 export function BootLog() {
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [visibleCount, setVisibleCount] = useState(0);
+  const timeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setVisibleCount(logLines.length);
+    if (prefersReducedMotion) {
+      setVisibleCount(BOOT_LOG_LINES.length);
       return;
     }
 
-    const interval = window.setInterval(() => {
-      setVisibleCount((current) => {
-        if (current >= logLines.length) {
-          window.clearInterval(interval);
-          return current;
-        }
+    const playLine = (index: number) => {
+      if (index >= BOOT_LOG_LINES.length) {
+        return;
+      }
 
-        return current + 1;
-      });
-    }, 220);
+      timeoutRef.current = window.setTimeout(() => {
+        setVisibleCount(index + 1);
+        playLine(index + 1);
+      }, getBootLogDelay(BOOT_LOG_LINES[index]));
+    };
 
-    return () => window.clearInterval(interval);
-  }, []);
+    playLine(0);
+
+    return () => {
+      if (timeoutRef.current) {
+        window.clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [prefersReducedMotion]);
+
+  const completeLog = () => {
+    if (timeoutRef.current) {
+      window.clearTimeout(timeoutRef.current);
+    }
+    setVisibleCount(BOOT_LOG_LINES.length);
+  };
+
+  const isComplete = visibleCount >= BOOT_LOG_LINES.length;
 
   return (
-    <div className="panel p-4 sm:p-5" aria-live="polite">
-      <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[var(--muted)]">BOOT_LOG</p>
-      <ul className="space-y-1.5 text-sm text-[var(--txt)]">
-        {logLines.slice(0, visibleCount).map((line) => (
-          <li key={line} className="font-mono">
-            {line}
-          </li>
-        ))}
+    <button type="button" className="boot-log-click panel w-full p-space-16 text-left" onClick={completeLog} aria-live="polite">
+      <p className="meta-label mb-space-12">BOOT_LOG</p>
+      <ul className="boot-log-list text-sm text-[var(--text)]">
+        {BOOT_LOG_LINES.map((line, index) => {
+          const isVisible = index < visibleCount;
+          const isActive = !isComplete && index === visibleCount;
+
+          return (
+            <li key={line} className={`boot-log-line ${isVisible ? 'is-visible' : ''}`}>
+              <span>{isVisible ? line : '\u00a0'}</span>
+              <span
+                className={`cursor-block boot-caret ${isActive ? 'is-active' : ''} ${prefersReducedMotion ? 'is-reduced' : ''}`}
+                aria-hidden
+              >
+                ▋
+              </span>
+            </li>
+          );
+        })}
       </ul>
-    </div>
+    </button>
   );
 }

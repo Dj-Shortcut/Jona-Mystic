@@ -2,6 +2,8 @@
 
 import { ReactNode, useEffect, useRef, useState } from 'react';
 
+import { usePrefersReducedMotion } from '@/lib/motion';
+
 type SectionProps = {
   id?: string;
   title: string;
@@ -10,12 +12,12 @@ type SectionProps = {
 };
 
 export function Section({ id, title, pathLabel, children }: SectionProps) {
+  const prefersReducedMotion = usePrefersReducedMotion();
   const ref = useRef<HTMLElement | null>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion) {
+    if (prefersReducedMotion) {
       setVisible(true);
       return;
     }
@@ -37,13 +39,13 @@ export function Section({ id, title, pathLabel, children }: SectionProps) {
     }
 
     return () => observer.disconnect();
-  }, []);
+  }, [prefersReducedMotion]);
 
   return (
-    <section id={id} ref={ref} className={`panel reveal p-4 sm:p-5 ${visible ? 'is-visible' : ''}`}>
-      <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">{pathLabel}</p>
-      <h2 className="mt-2 text-xl font-semibold text-[var(--txt)] sm:text-2xl">{title}</h2>
-      <div className="mt-4 text-sm text-[var(--muted)]">{children}</div>
+    <section id={id} ref={ref} className={`panel reveal p-space-16 ${visible ? 'is-visible' : ''}`}>
+      <p className="meta-label">{pathLabel}</p>
+      <h2 className="title mt-space-8 text-[var(--text)]">{title}</h2>
+      <div className="mt-space-16 text-sm leading-[1.5] text-[var(--muted)]">{children}</div>
     </section>
   );
 }
