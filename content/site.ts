@@ -1,66 +1,58 @@
 export type SiteContent = {
   name: string;
-  tagline: string;
+  subtitle: string;
   bpmRange: string;
   genre: string;
   region: string;
-  links: {
-    instagram: string;
-    soundcloud: string;
-    booking: string;
-  };
   mixes: Array<{
     title: string;
     description: string;
+    platform: string;
     href: string;
   }>;
   gigs: Array<{
     title: string;
     date: string;
-    location: string;
-    href: string;
+    venue: string;
+    city: string;
+    details: string;
   }>;
-  contact: {
-    email: string;
-    phone: string;
-    note: string;
-  };
 };
 
 export const site: SiteContent = {
   name: 'DJ Jona-Mystic',
-  tagline: 'Booting deep grooves for late-night dancefloors...',
-  bpmRange: '122-128 BPM',
+  subtitle: 'Terminal-grade energy for dancefloors after midnight.',
+  bpmRange: '124–132',
   genre: 'Progressive / Melodic House (placeholder)',
   region: 'BE',
-  links: {
-    instagram: '',
-    soundcloud: '',
-    booking: '',
-  },
   mixes: [
     {
-      title: 'Midnight Signal // Placeholder',
-      description: 'Placeholder mix. Replace with live stream or SoundCloud link.',
+      title: 'MIDNIGHT_SIGNAL_001',
+      description: 'Late-night melodic pressure test with rolling lows.',
+      platform: 'SoundCloud',
       href: '#',
     },
     {
-      title: 'Neon Pulse // Placeholder',
-      description: 'Placeholder mix description for future drop.',
+      title: 'NEON_PULSE_002',
+      description: 'Warm-up sequence for peak-time transitions.',
+      platform: 'Mixcloud',
       href: '#',
     },
   ],
   gigs: [
     {
-      title: 'TBA // Club Night',
-      date: 'TBA',
-      location: 'Belgium',
-      href: '#',
+      title: 'TBA',
+      date: 'PENDING',
+      venue: 'Venue',
+      city: 'City',
+      details: 'Line check pending. Contact node unlocked after confirmation.',
+    },
+    {
+      title: 'TBA',
+      date: 'PENDING',
+      venue: 'Venue',
+      city: 'City',
+      details: 'Support slot placeholder. Full routing data will be published later.',
     },
   ],
-  contact: {
-    email: 'booking@jona-mystic.com',
-    phone: '+32 000 00 00 00',
-    note: 'Open for club nights, festival warmups and private events.',
-  },
 };
