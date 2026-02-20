@@ -1,51 +1,43 @@
-import { Shell } from "@/components/Shell";
+import Link from 'next/link';
+import Section from './components/Section';
 
-async function getHomepageData() {
-  return {
-    hostname: "mystic-node-01",
-    status: "operational",
-    time: new Date().toISOString(),
-    intro:
-      "Jona Mystic runt als een interactieve command console. Gebruik deze shell om projecten, stack en contactopties direct te vinden.",
-    bootLines: [
-      "init :: verifying signal routes",
-      "load :: syncing project manifests",
-      "ready :: waiting for next command",
-    ],
-    command: {
-      prompt: "guest@jona:~$",
-      value: "show --profile --active",
-    },
-    sections: [
-      {
-        title: "Capabilities",
-        description: "Waar ik doorgaans op ingezet word.",
-        rows: [
-          { label: "Build", chips: ["Next.js", "TypeScript", "Design Systems"] },
-          { label: "Ship", chips: ["CI/CD", "Vercel", "DX Automation"] },
-        ],
-      },
-      {
-        title: "Signals",
-        description: "Kernwaarden tijdens samenwerking.",
-        rows: [
-          { label: "Principles", chips: ["Snel feedback", "Heldere scopes", "Ownership"] },
-          { label: "Output", chips: ["Strakke UI", "Betrouwbare code", "Meetbare impact"] },
-        ],
-      },
-    ],
-    footer: {
-      message: "© Jona Mystic // secure channel open",
-      links: [
-        { href: "#projects", label: "Projects" },
-        { href: "#contact", label: "Contact" },
-      ],
-    },
-  };
-}
+const commandButtons = [
+  { label: 'Mixes', href: '#mixes' },
+  { label: 'Gigs', href: '#gigs' },
+  { label: 'Contact', href: '#contact' },
+];
 
-export default async function HomePage() {
-  const data = await getHomepageData();
+export default function HomePage() {
+  return (
+    <main className="mx-auto flex min-h-screen w-full max-w-4xl flex-col gap-8 p-8">
+      <header className="flex flex-col gap-4">
+        <h1 className="text-4xl font-bold text-zinc-50">Jona Mystic</h1>
+        <p className="text-zinc-300">Electronic journeys, live sets and future dates.</p>
+        <nav className="flex flex-wrap gap-3">
+          {/* TODO: switch to routes when links/gigs exist */}
+          {commandButtons.map((button) => (
+            <Link
+              key={button.href}
+              href={button.href}
+              className="rounded-md border border-zinc-700 px-4 py-2 text-sm font-medium text-zinc-100 transition hover:border-zinc-400"
+            >
+              {button.label}
+            </Link>
+          ))}
+        </nav>
+      </header>
 
-  return <Shell {...data} />;
+      <Section id="mixes" title="Mixes">
+        Placeholder voor mix-overzicht. Voeg hier binnenkort de eerste sets toe.
+      </Section>
+
+      <Section id="gigs" title="Gigs">
+        Placeholder voor aankomende gigs. Binnenkort volgen data en locaties.
+      </Section>
+
+      <Section id="contact" title="Contact">
+        Placeholder voor contactinformatie. Voeg hier socials en boekingsinformatie toe.
+      </Section>
+    </main>
+  );
 }
