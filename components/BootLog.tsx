@@ -1,48 +1,48 @@
-import { useEffect, useState } from "react";
+'use client';
 
-const lines = [
-  "[    0.000000] Mystic kernel initializing...",
-  "[    0.114723] Loading encrypted memory map",
-  "[    0.231995] Verifying entropy sources",
-  "[    0.348271] Mounting /dev/arcane",
-  "[    0.466802] Starting daemon: spectrald",
-  "[    0.589114] Network interface myst0: link up",
-  "[    0.708529] Synchronizing astral clock",
-  "[    0.826001] Boot sequence complete",
+import { useEffect, useState } from 'react';
+
+const logLines = [
+  '[  OK  ] Booting Jona-Mystic sound kernel',
+  '[  OK  ] Loading mixer buses and FX chains',
+  '[  OK  ] Syncing BPM range to 122-128',
+  '[  OK  ] Establishing crowd-energy signal',
+  '[ DONE ] Terminal profile online',
 ];
 
-export default function BootLog() {
+export function BootLog() {
   const [visibleCount, setVisibleCount] = useState(0);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    if (mediaQuery.matches) {
-      setVisibleCount(lines.length);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setVisibleCount(logLines.length);
       return;
     }
 
-    const intervalId = window.setInterval(() => {
+    const interval = window.setInterval(() => {
       setVisibleCount((current) => {
-        if (current >= lines.length) {
-          window.clearInterval(intervalId);
+        if (current >= logLines.length) {
+          window.clearInterval(interval);
           return current;
         }
 
         return current + 1;
       });
-    }, 180);
+    }, 200);
 
-    return () => {
-      window.clearInterval(intervalId);
-    };
+    return () => window.clearInterval(interval);
   }, []);
 
   return (
-    <div aria-live="polite" aria-atomic="true">
-      {lines.slice(0, visibleCount).map((line, index) => (
-        <div key={`${index}-${line}`}>{line}</div>
-      ))}
+    <div className="panel p-4 sm:p-5" aria-live="polite">
+      <p className="mb-3 text-xs uppercase tracking-[0.16em] text-[var(--muted)]">boot.log</p>
+      <ul className="space-y-1.5 text-sm text-[var(--txt)]">
+        {logLines.slice(0, visibleCount).map((line) => (
+          <li key={line} className="font-mono">
+            {line}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

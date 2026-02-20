@@ -1,19 +1,18 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
-export type SectionProps = {
+type SectionProps = {
+  id?: string;
   title: string;
-  description?: string;
+  pathLabel: string;
   children: ReactNode;
 };
 
-export function Section({ title, description, children }: SectionProps) {
+export function Section({ id, title, pathLabel, children }: SectionProps) {
   return (
-    <section className="space-y-3 rounded-lg border border-emerald-400/20 bg-black/40 p-4">
-      <div>
-        <h2 className="font-mono text-sm uppercase tracking-[0.2em] text-emerald-200">{title}</h2>
-        {description ? <p className="mt-1 text-sm text-emerald-100/70">{description}</p> : null}
-      </div>
-      <div>{children}</div>
+    <section id={id} className="panel p-4 sm:p-5">
+      <p className="text-xs uppercase tracking-[0.16em] text-[var(--muted)]">{pathLabel}</p>
+      <h2 className="mt-2 text-xl font-semibold text-[var(--txt)] sm:text-2xl">{title}</h2>
+      <div className="mt-4 text-sm text-[var(--muted)]">{children}</div>
     </section>
   );
 }

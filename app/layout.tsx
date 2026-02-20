@@ -1,17 +1,16 @@
 import type { Metadata } from 'next';
-
-const jonathanBio =
-  "Hey, my name is Jonathan, better known as 'jona-mystic'. From 1987 I started walkin' on this bizarre planet and I immediately knew that music was in my blood. At age 15 I started very small with a few vinyls and expanded into the DJ I have become now.";
+import './globals.css';
 
 export const metadata: Metadata = {
   title: {
     default: 'DJ Jona-Mystic',
     template: '%s | DJ Jona-Mystic',
   },
-  description: jonathanBio,
+  description: 'Terminal-style DJ profile for Jona-Mystic.',
+  metadataBase: new URL('https://jona-mystic.vercel.app'),
   openGraph: {
     title: 'DJ Jona-Mystic',
-    description: jonathanBio,
+    description: 'Terminal-style DJ profile for Jona-Mystic.',
     images: ['/og.svg'],
   },
   icons: {
@@ -19,14 +18,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="nl">
-      <body>{children}</body>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }

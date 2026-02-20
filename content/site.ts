@@ -1,4 +1,4 @@
-export type SiteConfig = {
+export type SiteContent = {
   name: string;
   tagline: string;
   bpmRange: string;
@@ -9,53 +9,58 @@ export type SiteConfig = {
     soundcloud: string;
     booking: string;
   };
-  mixes: {
+  mixes: Array<{
     title: string;
     description: string;
     href: string;
-  }[];
-  gigs: {
+  }>;
+  gigs: Array<{
     title: string;
     date: string;
     location: string;
     href: string;
-  }[];
+  }>;
   contact: {
     email: string;
     phone: string;
-    formAction: string;
+    note: string;
   };
 };
 
-export const site: SiteConfig = {
-  name: 'Jona Mystic',
-  tagline: 'Hypnotic grooves for deep nights.',
-  bpmRange: '122–128 BPM',
-  genre: 'Deep / Progressive House',
-  region: 'NL / EU',
+export const site: SiteContent = {
+  name: 'DJ Jona-Mystic',
+  tagline: 'Booting deep grooves for late-night dancefloors...',
+  bpmRange: '122-128 BPM',
+  genre: 'Progressive / Melodic House (placeholder)',
+  region: 'BE',
   links: {
-    instagram: '#',
-    soundcloud: '#',
-    booking: '#',
+    instagram: '',
+    soundcloud: '',
+    booking: '',
   },
   mixes: [
     {
-      title: 'Mix placeholder',
-      description: 'Coming soon',
+      title: 'Midnight Signal // Placeholder',
+      description: 'Placeholder mix. Replace with live stream or SoundCloud link.',
+      href: '#',
+    },
+    {
+      title: 'Neon Pulse // Placeholder',
+      description: 'Placeholder mix description for future drop.',
       href: '#',
     },
   ],
   gigs: [
     {
-      title: 'Gig placeholder',
+      title: 'TBA // Club Night',
       date: 'TBA',
-      location: 'TBA',
+      location: 'Belgium',
       href: '#',
     },
   ],
   contact: {
-    email: 'hello@example.com',
-    phone: '+31 00 000 0000',
-    formAction: '#',
+    email: 'booking@jona-mystic.com',
+    phone: '+32 000 00 00 00',
+    note: 'Open for club nights, festival warmups and private events.',
   },
 };
