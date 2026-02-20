@@ -8,26 +8,42 @@ import { usePrefersReducedMotion } from '@/lib/motion';
 export function BootLog() {
   const prefersReducedMotion = usePrefersReducedMotion();
   const [visibleCount, setVisibleCount] = useState(0);
+  const [activeTextLength, setActiveTextLength] = useState(0);
   const timeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (prefersReducedMotion) {
       setVisibleCount(BOOT_LOG_LINES.length);
+      setActiveTextLength(0);
       return;
     }
 
-    const playLine = (index: number) => {
+    const typeLine = (index: number, charIndex: number) => {
       if (index >= BOOT_LOG_LINES.length) {
+        setActiveTextLength(0);
+        return;
+      }
+
+      const line = BOOT_LOG_LINES[index];
+
+      if (charIndex <= line.length) {
+        timeoutRef.current = window.setTimeout(() => {
+          setVisibleCount(index);
+          setActiveTextLength(charIndex);
+          typeLine(index, charIndex + 1);
+        }, 14);
+
         return;
       }
 
       timeoutRef.current = window.setTimeout(() => {
         setVisibleCount(index + 1);
-        playLine(index + 1);
-      }, getBootLogDelay(BOOT_LOG_LINES[index]));
+        setActiveTextLength(0);
+        typeLine(index + 1, 0);
+      }, getBootLogDelay(line));
     };
 
-    playLine(0);
+    typeLine(0, 0);
 
     return () => {
       if (timeoutRef.current) {
@@ -41,6 +57,7 @@ export function BootLog() {
       window.clearTimeout(timeoutRef.current);
     }
     setVisibleCount(BOOT_LOG_LINES.length);
+    setActiveTextLength(0);
   };
 
   const isComplete = visibleCount >= BOOT_LOG_LINES.length;
@@ -51,11 +68,13 @@ export function BootLog() {
       <ul className="boot-log-list text-sm text-[var(--text)]">
         {BOOT_LOG_LINES.map((line, index) => {
           const isVisible = index < visibleCount;
+          const isTyping = !isComplete && index === visibleCount;
           const isActive = !isComplete && index === visibleCount;
+          const displayedLine = isVisible ? line : isTyping ? line.slice(0, activeTextLength) : '\u00a0';
 
           return (
-            <li key={line} className={`boot-log-line ${isVisible ? 'is-visible' : ''}`}>
-              <span>{isVisible ? line : '\u00a0'}</span>
+            <li key={line} className={`boot-log-line ${isVisible || isTyping ? 'is-visible' : ''}`}>
+              <span>{displayedLine}</span>
               <span
                 className={`cursor-block boot-caret ${isActive ? 'is-active' : ''} ${prefersReducedMotion ? 'is-reduced' : ''}`}
                 aria-hidden
