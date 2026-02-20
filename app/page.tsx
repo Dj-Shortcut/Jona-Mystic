@@ -6,6 +6,8 @@ import { Shell } from '@/components/Shell';
 import { TerminalHeader } from '@/components/TerminalHeader';
 import { site } from '@/content/site';
 
+export const dynamic = 'force-static';
+
 export default function HomePage() {
   return (
     <Shell>
